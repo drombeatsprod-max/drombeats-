@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>DromBeats — Beats Sombres & Spatiaux</title>
+  <meta name="description" content="DromBeats — Beats trap / drill sombres et spatiaux. MP3 + WAV. Basic 30€, Premium 50€." />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg1: #04040a;
+      --bg2: #070512;
+      --accent: #7b5cff;
+      --accent-2: #3ba1ff;
+      --glass: rgba(255,255,255,0.04);
+      --card: rgba(255,255,255,0.03);
+      --text: #e6e6f0;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial; background: radial-gradient(ellipse at 10% 10%, rgba(123,92,255,0.06), transparent 8%), radial-gradient(ellipse at 90% 90%, rgba(59,161,255,0.04), transparent 10%), linear-gradient(180deg,var(--bg1),var(--bg2)); color:var(--text);}
+    body{display:flex;flex-direction:column;align-items:center;}
+
+    /* animated stars */
+    .stars{position:fixed;inset:0;pointer-events:none;z-index:0;}
+    canvas{width:100%;height:100%;display:block}
+
+    .container{width:100%;max-width:1100px;padding:28px;position:relative;z-index:2}
+    header{display:flex;align-items:center;justify-content:space-between;padding:12px 0}
+    .brand{display:flex;align-items:center;gap:14px}
+    .logo{width:56px;height:56px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;font-family:Orbitron,monospace;font-weight:700;color:#04040a}
+    h1{font-family:Orbitron,monospace;margin:0;font-size:20px}
+    .nav{display:flex;gap:14px;align-items:center}
+    .nav a{color:var(--text);text-decoration:none;padding:8px 12px;border-radius:8px;font-weight:600;font-size:14px}
+    .nav a:hover{background:rgba(255,255,255,0.03)}
+
+    /* hero */
+    .hero{display:grid;grid-template-columns:1fr 420px;gap:28px;align-items:center;margin-top:20px}
+    .hero-card{background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));padding:28px;border-radius:14px;box-shadow:0 6px 30px rgba(4,5,10,0.6);backdrop-filter: blur(6px)}
+    .slogan{font-family:Orbitron,monospace;font-size:28px;margin:0 0 12px}
+    .lead{color:#cfcfe2;margin-bottom:16px}
+    .cta{display:flex;gap:12px}
+    .btn{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#030312;padding:10px 16px;border-radius:10px;font-weight:700;text-decoration:none}
+    .btn.secondary{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--text)}
+
+    /* shop grid */
+    .shop{margin-top:28px;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+    .beat{background:var(--card);padding:14px;border-radius:12px;display:flex;flex-direction:column;gap:12px}
+    .beat .meta{display:flex;justify-content:space-between;align-items:center}
+    .beat h3{margin:0;font-size:16px}
+    .tag{font-size:13px;color:#b8b8d0}
+    audio{width:100%;outline:none}
+    .buy-row{display:flex;gap:10px;align-items:center;justify-content:space-between}
+    .price{font-weight:700}
+    .licenses{display:flex;gap:8px}
+    .license-btn{background:rgba(255,255,255,0.03);border-radius:8px;padding:8px 10px;text-decoration:none;color:var(--text);font-weight:600}
+
+    /* footer */
+    footer{margin:40px 0 80px;color:#bdbdd3;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+    .socials a{color:var(--text);text-decoration:none;margin-right:10px}
+
+    /* responsive */
+    @media (max-width:900px){
+      .hero{grid-template-columns:1fr}
+      .hero .player-card{order:2}
+    }
+
+    /* small helpers */
+    .muted{color:#bdbdd3}
+    .center{display:flex;align-items:center;justify-content:center}
+    .about{margin-top:20px;padding:18px;background:linear-gradient(180deg,rgba(255,255,255,0.01),transparent);border-radius:12px}
+    .contact{margin-top:18px;padding:16px;border-radius:12px;background:var(--glass)}
+  </style>
+</head>
+<body>
+  <div class="stars"><canvas id="starfield"></canvas></div>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div class="logo">DB</div>
+        <div>
+          <h1>DromBeats</h1>
+          <div class="muted" style="font-size:13px">Beats Sombres • Épiques • Spatiaux</div>
+        </div>
+      </div>
+      <nav class="nav">
+        <a href="#beats">Beats</a>
+        <a href="#about">À propos</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div class="hero-card">
+        <div style="display:flex;align-items:center;gap:14px">
+          <div style="width:84px;height:84px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;font-family:Orbitron;font-weight:700;color:#04040a;font-size:22px">DB</div>
+          <div>
+            <div class="slogan">Beats Sombres, Épiques & Spatiaux</div>
+            <div class="lead">Bienvenue sur DromBeats — instru orientées trap, drill et ambiances cosmiques. Tous les beats sont fournis en MP3 + WAV.</div>
+            <div class="cta">
+              <a class="btn" href="#beats">Écouter / Acheter</a>
+              <a class="btn secondary" href="#contact">Me contacter</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="about">
+          <strong>Formats :</strong> MP3 + WAV • <strong>Tarifs :</strong> Basic 30€ • Premium 50€
+        </div>
+      </div>
+
+      <aside class="hero-card player-card">
+        <h3 style="margin-top:0">Featured — Astral Trap</h3>
+        <p class="muted">Preview rapide — MP3 + WAV fournis après achat</p>
+        <audio controls preload="metadata">
+          <source src="sample-astral.mp3" type="audio/mpeg">
+          Ton navigateur ne supporte pas la lecture audio.
+        </audio>
+        <div style="margin-top:12px;display:flex;gap:8px;align-items:center">
+          <a class="license-btn" href="https://www.paypal.me/drombeats/30" target="_blank" rel="noopener">Acheter Basic — 30€</a>
+          <a class="license-btn" href="https://www.paypal.me/drombeats/50" target="_blank" rel="noopener">Acheter Premium — 50€</a>
+        </div>
+        <div class="muted" style="margin-top:10px;font-size:13px">Remplace les liens PayPal par ton lien PayPal.me ou bouton PayPal Commerce pour paiements intégrés.</div>
+      </aside>
+    </section>
+
+    <main>
+      <h2 id="beats" style="margin-top:28px">Boutique — Beats</h2>
+      <p class="muted">Tous les beats sont fournis en MP3 + WAV. Choisis une licence puis suis le lien PayPal pour finaliser l'achat.</p>
+
+      <section class="shop">
+        <!-- Beat 1 -->
+        <article class="beat">
+          <div class="meta"><h3>Astral Trap</h3><div class="tag">2:35 • Trap / Dark</div></div>
+          <audio controls preload="none"><source src="beats/astral-trap.mp3" type="audio/mpeg">Ton navigateur ne supporte pas la lecture audio.</audio>
+          <div class="buy-row">
+            <div class="licenses">
+              <a class="license-btn" href="https://www.paypal.me/drombeats/30" target="_blank" rel="noopener">Basic — 30€</a>
+              <a class="license-btn" href="https://www.paypal.me/drombeats/50" target="_blank" rel="noopener">Premium — 50€</a>
+            </div>
+            <div class="price">MP3 + WAV</div>
+          </div>
+        </article>
+
+        <!-- Beat 2 -->
+        <article class="beat">
+          <div class="meta"><h3>Void Drill</h3><div class="tag">2:12 • Drill / Dark</div></div>
+          <audio controls preload="none"><source src="beats/void-drill.mp3" type="audio/mpeg">Ton navigateur ne supporte pas la lecture audio.</audio>
+          <div class="buy-row">
+            <div class="licenses">
+              <a class="license-btn" href="https://www.paypal.me/drombeats/30" target="_blank" rel="noopener">Basic — 30€</a>
+              <a class="license-btn" href="https://www.paypal.me/drombeats/50" target="_blank" rel="noopener">Premium — 50€</a>
+            </div>
+            <div class="price">MP3 + WAV</div>
+          </div>
+        </article>
+
+        <!-- Beat 3 -->
+        <article class="beat">
+          <div class="meta"><h3>Nebula Mood</h3><div class="tag">3:05 • Ambient / Trap</div></div>
+          <audio controls preload="none"><source src="beats/nebula-mood.mp3" type="audio/mpeg">Ton navigateur ne supporte pas la lecture audio.</audio>
+          <div class="buy-row">
+            <div class="licenses">
+              <a class="license-btn" href="https://www.paypal.me/drombeats/30" target="_blank" rel="noopener">Basic — 30€</a>
+              <a class="license-btn" href="https://www.paypal.me/drombeats/50" target="_blank" rel="noopener">Premium — 50€</a>
+            </div>
+            <div class="price">MP3 + WAV</div>
+          </div>
+        </article>
+
+      </section>
+
+      <section id="about" class="about">
+        <h3>À propos — DromBeats</h3>
+        <p>DromBeats crée des instrus orientées trap, drill et ambiances spatiales. Mon objectif : fournir des beats puissants et immersifs qui donnent une identité unique à ton projet.</p>
+      </section>
+
+      <section id="contact" class="contact">
+        <h3>Contact & Réseaux</h3>
+        <p class="muted">Pour collab, licence exclusive, pack ou commande sur mesure, contacte-moi :</p>
+        <form onsubmit="event.preventDefault(); alert('Remplace cette action par l\'envoi réel (ex: intégration backend ou lien mailto).');">
+          <label style="display:block;margin-bottom:8px"><input required placeholder="Ton nom" style="width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--text)"></label>
+          <label style="display:block;margin-bottom:8px"><input required type="email" placeholder="Ton email" style="width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--text)"></label>
+          <label style="display:block;margin-bottom:8px"><textarea required placeholder="Message" style="width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--text);min-height:90px"></textarea></label>
+          <div style="display:flex;gap:10px;align-items:center">
+            <button class="btn" type="submit">Envoyer</button>
+            <a class="btn secondary" href="mailto:contact@drombeats.com">Ou envoie par mail</a>
+          </div>
+        </form>
+
+        <div style="margin-top:12px">
+          <strong>Instagram</strong> : <a href="https://instagram.com/drombeats" target="_blank">@drombeats</a> • <strong>YouTube</strong> : <a href="https://www.youtube.com/@DromBeats" target="_blank">DromBeats</a>
+        </div>
+      </section>
+
+    </main>
+
+    <footer>
+      <div>© <strong>DromBeats</strong> — Beats & Licences • Basic 30€ • Premium 50€</div>
+      <div class="socials">
+        <a href="https://instagram.com/drombeats" target="_blank">Instagram</a>
+        <a href="https://www.youtube.com/@DromBeats" target="_blank">YouTube</a>
+        <a href="https://www.paypal.me/drombeats" target="_blank">PayPal</a>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // Simple animated starfield
+    (function(){
+      const canvas = document.getElementById('starfield');
+      const ctx = canvas.getContext('2d');
+      let w, h, stars=[];
+      function resize(){
+        w = canvas.width = innerWidth; h = canvas.height = innerHeight; init();
+      }
+      function rand(min,max){return Math.random()*(max-min)+min}
+      function init(){
+        stars = [];
+        const count = Math.floor((w*h)/6000);
+        for(let i=0;i<count;i++){
+          stars.push({x:Math.random()*w,y:Math.random()*h,z:rand(0.1,1),r:rand(0.3,1.8),vx:rand(-0.05,0.05),vy:rand(-0.05,0.05)})
+        }
+      }
+      function draw(){
+        ctx.clearRect(0,0,w,h);
+        for(const s of stars){
+          s.x += s.vx; s.y += s.vy;
+          if(s.x<0) s.x = w; if(s.x>w) s.x=0; if(s.y<0) s.y=h; if(s.y>h) s.y=0;
+          ctx.beginPath(); ctx.globalAlpha = s.z*0.9; ctx.fillStyle = '#ffffff'; ctx.arc(s.x,s.y,s.r,0,Math.PI*2); ctx.fill();
+        }
+        requestAnimationFrame(draw);
+      }
+      addEventListener('resize', resize);
+      resize(); draw();
+    })();
+  </script>
+</body>
+</html>
